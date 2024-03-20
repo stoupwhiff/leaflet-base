@@ -9,19 +9,21 @@ import { MapService } from './core/services/map.service';
 import { MarkersService } from './core/services/markers.service';
 import { baseTiles } from './utils/baseTiles';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule, CommonModule],
+  imports: [RouterOutlet, HttpClientModule, CommonModule, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements AfterViewInit {
-  title = 'leaflet';
+  private map!: Map;
+  private layerChooser!: L.Control.Layers;
+  private markers!: Layer[];
+  private searchedMarker!: Layer;
 
-  map!: Map;
-  layerChooser!: L.Control.Layers;
-  markers!: Layer[];
+  address: string = '';
 
   constructor(
     private mapService: MapService,
@@ -32,7 +34,7 @@ export class AppComponent implements AfterViewInit {
     this.InitMap();
     /** 
      * Questa funzione permette di centrare la mappa sulla posizione dell'utente
-     * Aggiunge anche un marker sulla posizione dell'utente, di colore e forma diversa
+     * aggiungendo un marker circolare su di essa
      * */
     this.locateUser();
   }
@@ -65,7 +67,7 @@ export class AppComponent implements AfterViewInit {
         ).addTo(this.map)
           .bindPopup('Ti trovi qui').openPopup();
       }, () => {
-        alert('Non è stato possibile ottenere la tua posizione');
+        alert('Non è stato possibile ottenere la tua posizione. Prova a riavviare il browser e concedere i permessi di geolocalizzazione');
       });
     } else {
       alert('Geolocalizzazione non supportata dal tuo browser');
@@ -73,17 +75,40 @@ export class AppComponent implements AfterViewInit {
   }
 
   private AddMarkers(): void {
-    this.markersService.getMarkers().subscribe(markers => {
-      this.markers = markers.map((marker: Marker) => {
-        if (marker.location)
-          return L.marker(marker.location).bindPopup('<strong>' + marker.name + '</strong>' + '<br>' + marker.description);
-        else return L.marker([0, 0]);
-      });
-      /**
-       * questo codice permette di aggiungere al layerChooser, e richiede l'attivazione manuale di Markers
-       * this.layerChooser.addOverlay(L.layerGroup(this.markers), 'Markers');
-       */
-      L.layerGroup(this.markers).addTo(this.map); // questo permette di aggiungere i marker direttamente alla mappa
+    this.markersService.getMarkers().subscribe({
+      next: (markers: Marker[]) => {
+        this.markers = markers.map((marker: Marker) => {
+          if (marker.location)
+            return L.marker(marker.location).bindPopup('<strong>' + marker.name + '</strong>' + '<br>' + marker.description);
+          else return L.marker([0, 0]);
+        });
+        /**
+         * questo codice permette di aggiungere i markers al layerChooser, ma richiede l'attivazione manuale del livello per permetterne la visualizzazione
+         * this.layerChooser.addOverlay(L.layerGroup(this.markers), 'Markers');
+         */
+        L.layerGroup(this.markers).addTo(this.map); // questo permette di aggiungere i marker direttamente alla mappe
+      },
+      error: (error) => {
+        console.error("Errore: ", error);
+      },
+    });
+  }
+
+  getMarkerByAddress(address: string): void {
+    this.markersService.getMarkerByAddress(address).subscribe({
+      next: (res) => {
+        if (res && res.length > 0) {
+          if (this.searchedMarker) this.map.removeLayer(this.searchedMarker);
+          this.searchedMarker = L.marker([res[0].lat, res[0].lon]);
+          this.map.addLayer(this.searchedMarker);
+          this.map.setView([res[0].lat, res[0].lon], 16);
+        } else {
+          alert('Indirizzo non trovato');
+        }
+      },
+      error: (error) => {
+        console.error("Errore: ", error);
+      }
     });
   }
 }
