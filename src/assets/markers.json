@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Capo Testa",
+        "location": [
+            40.9876,
+            8.2345
+        ],
+        "description": "Suggestiva area rocciosa a Santa Teresa di Gallura."
+    },
+    {
+        "name": "Spiaggia della Pelosa",
+        "location": [
+            40.6234,
+            8.1987
+        ],
+        "description": "Famosa spiaggia di sabbia bianca a Stintino."
+    },
+    {
+        "name": "Grotte di Nettuno",
+        "location": [
+            39.0987,
+            9.6543
+        ],
+        "description": "Grotte marine vicino ad Alghero, aperte ai visitatori."
+    },
+    {
+        "name": "Nuraghe di Barumini",
+        "location": [
+            39.7012,
+            8.9876
+        ],
+        "description": "Sito nuragico patrimonio UNESCO."
+    },
+    {
+        "name": "Porto Cervo",
+        "location": [
+            41.1345,
+            9.5432
+        ],
+        "description": "Rinomata località turistica della Costa Smeralda."
+    },
+    {
+        "name": "Area Archeologica di Nora",
+        "location": [
+            39.0654,
+            8.4321
+        ],
+        "description": "Resti dell'antica città romana di Nora."
+    },
+    {
+        "name": "Monte Limbara",
+        "location": [
+            40.7890,
+            9.1234
+        ],
+        "description": "Cima montuosa nel Parco Naturale di Limbara."
+    },
+    {
+        "name": "Cala Goloritzé",
+        "location": [
+            40.1234,
+            9.6543
+        ],
+        "description": "Splendida insenatura nel Golfo di Orosei."
+    },
+    {
+        "name": "Isola dell'Asinara",
+        "location": [
+            41.0987,
+            8.2765
+        ],
+        "description": "Parco nazionale nell'ex isola-carcere."
+    },
+    {
+        "name": "Su Nuraxi di Barumini",
+        "location": [
+            39.7012,
+            8.9876
+        ],
+        "description": "Complesso nuragico patrimonio UNESCO."
+    }
+]
