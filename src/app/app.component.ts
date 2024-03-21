@@ -10,6 +10,7 @@ import { MarkersService } from './core/services/markers.service';
 import { baseTiles } from './utils/baseTiles';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { OSM } from './core/models/osm.model';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -96,12 +97,15 @@ export class AppComponent implements AfterViewInit {
 
   getMarkerByAddress(address: string): void {
     this.markersService.getMarkerByAddress(address).subscribe({
-      next: (res) => {
+      next: (res: OSM[]) => {
+        console.log(res)
         if (res && res.length > 0) {
           if (this.searchedMarker) this.map.removeLayer(this.searchedMarker);
-          this.searchedMarker = L.marker([res[0].lat, res[0].lon]);
+          const lat = parseInt(res[0].lat);
+          const lon = parseInt(res[0].lon);
+          this.searchedMarker = L.marker([lat, lon]).bindPopup('<strong>' + res[0].display_name + '</strong>');
           this.map.addLayer(this.searchedMarker);
-          this.map.setView([res[0].lat, res[0].lon], 16);
+          this.map.setView([lat, lon], 16);
         } else {
           alert('Indirizzo non trovato');
         }
