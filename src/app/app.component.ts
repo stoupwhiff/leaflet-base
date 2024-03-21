@@ -98,11 +98,10 @@ export class AppComponent implements AfterViewInit {
   getMarkerByAddress(address: string): void {
     this.markersService.getMarkerByAddress(address).subscribe({
       next: (res: OSM[]) => {
-        console.log(res)
         if (res && res.length > 0) {
           if (this.searchedMarker) this.map.removeLayer(this.searchedMarker);
-          const lat = parseInt(res[0].lat);
-          const lon = parseInt(res[0].lon);
+          const lat = parseFloat(res[0].lat);
+          const lon = parseFloat(res[0].lon);
           this.searchedMarker = L.marker([lat, lon]).bindPopup('<strong>' + res[0].display_name + '</strong>');
           this.map.addLayer(this.searchedMarker);
           this.map.setView([lat, lon], 16);
