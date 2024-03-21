@@ -16,7 +16,7 @@ export class MarkersService {
     }
 
     getMarkersFromBackend(data: any) {
-        return this.http.post<Marker[]>(`${this.backendUrl}`, data);
+        return this.http.post<any>(`${this.backendUrl}`, data);
     }
 
     getMarkerByAddress(address: string) {
