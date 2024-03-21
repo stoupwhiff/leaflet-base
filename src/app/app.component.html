@@ -1,5 +1,5 @@
 <div>
-    <input type="text" [(ngModel)]="address">
-    <button (click)="getMarkerByAddress(address)" (keyup.enter)="getMarkerByAddress(address)">Cerca Indirizzo</button>
+    <input type="text" [(ngModel)]="address" (keyup.enter)="getMarkerByAddress(address)">
+    <button (click)="getMarkerByAddress(address)" >Cerca Indirizzo</button>
 </div>
 <div id="map"></div>
